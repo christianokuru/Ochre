@@ -1,26 +1,358 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Ochre — brand layer on top of the "golden hour editorial" system (docs/DESIGN.md).
+ * Parchment canvas, ink text, one wine CTA, violet links, lilac secondary.
+ * Ochre (#b8742a) is the data colour: charts and money moments only.
+ */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+  --font-script: var(--font-caveat), cursive;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* Brand colours: bg-wine, text-violet, bg-lilac, bg-lagoon, text-ochre, … */
+  --color-wine: var(--wine);
+  --color-violet: var(--violet);
+  --color-lilac: var(--lilac);
+  --color-lagoon: var(--lagoon);
+  --color-parchment: var(--parchment);
+  --color-ochre: var(--ochre);
+  --color-ink: var(--ink);
+
+  /* Status (reserved; always paired with an icon + label) */
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --color-critical: var(--critical);
+
+  /* Radius: 8px tabs / small buttons (rounded-lg), 16px cards / big buttons (rounded-xl) */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 2);
+  --radius-2xl: calc(var(--radius) * 2.5);
+  --radius-3xl: calc(var(--radius) * 3);
+  --radius-4xl: calc(var(--radius) * 4);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Type scale: light 460 weight for large display text, tight tracking */
+@theme {
+  --text-mega: clamp(3.5rem, 11vw, 10rem);
+  --text-mega--line-height: 0.86;
+  --text-mega--letter-spacing: -0.045em;
+  --text-mega--font-weight: 460;
+
+  --text-display: 4rem;
+  --text-display--line-height: 0.96;
+  --text-display--letter-spacing: -0.028em;
+  --text-display--font-weight: 460;
+
+  --text-heading-lg: 3.0625rem;
+  --text-heading-lg--line-height: 1.04;
+  --text-heading-lg--letter-spacing: -0.027em;
+  --text-heading-lg--font-weight: 460;
+
+  --text-section: 3rem;
+  --text-section--line-height: 0.96;
+  --text-section--letter-spacing: -0.01em;
+  --text-section--font-weight: 460;
+
+  --text-heading-sm: 1.75rem;
+  --text-heading-sm--line-height: 1.14;
+  --text-heading-sm--letter-spacing: -0.022em;
+  --text-heading-sm--font-weight: 460;
+
+  --text-subheading: 1.625rem;
+  --text-subheading--line-height: 1.3;
+  --text-subheading--letter-spacing: -0.014em;
+  --text-subheading--font-weight: 460;
+
+  --text-label-bold: 1.1875rem;
+  --text-label-bold--line-height: 1.5;
+  --text-label-bold--font-weight: 700;
+
+  --animate-marquee: marquee 60s linear infinite;
+  --animate-sign: sign 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+  --animate-stamp: stamp 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 0.9s both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-rise: rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes sign {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes stamp {
+  from {
+    opacity: 0;
+    transform: scale(1.8) rotate(-14deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(-8deg);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+:root {
+  /* Raw brand palette */
+  --wine: #421d24;
+  --violet: #714cb6;
+  --lilac: #d4c7ff;
+  --lagoon: #0c4243;
+  --parchment: #f2f0eb;
+  --ochre: #b8742a; /* validated chart mark on white (dataviz validator) */
+  --ink: #292827;
+  --good: #2f7a4f;
+  --warn: #b26b00;
+  --critical: #b42318;
+
+  --background: #f2f0eb;
+  --foreground: #292827;
+  --card: #ffffff;
+  --card-foreground: #292827;
+  --popover: #ffffff;
+  --popover-foreground: #292827;
+  --primary: #421d24;
+  --primary-foreground: #ffffff;
+  --secondary: #d4c7ff;
+  --secondary-foreground: #292827;
+  --muted: #e9e6df;
+  --muted-foreground: #666666;
+  --accent: #ece6ff;
+  --accent-foreground: #292827;
+  --destructive: #b42318;
+  --border: #e3e3e2;
+  --input: #e3e3e2;
+  --ring: #714cb6;
+  --chart-1: #b8742a;
+  --chart-2: #714cb6;
+  --chart-3: #0c4243;
+  --chart-4: #d4c7ff;
+  --chart-5: #666666;
+  --radius: 0.5rem;
+  --sidebar: #ebe8e1;
+  --sidebar-foreground: #292827;
+  --sidebar-primary: #421d24;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e1dbf7;
+  --sidebar-accent-foreground: #292827;
+  --sidebar-border: #e0ddd5;
+  --sidebar-ring: #714cb6;
+}
+
+.dark {
+  --wine: #6b2e3a;
+  --violet: #b9a3ff;
+  --lilac: #3a2f5c;
+  --lagoon: #0c4243;
+  --parchment: #1d1b1a;
+  --ochre: #c28232; /* validated chart mark on #272422 */
+  --ink: #f2f0eb;
+  --good: #5fbf86;
+  --warn: #e0a040;
+  --critical: #f97066;
+
+  --background: #1d1b1a;
+  --foreground: #f2f0eb;
+  --card: #272422;
+  --card-foreground: #f2f0eb;
+  --popover: #272422;
+  --popover-foreground: #f2f0eb;
+  --primary: #d4c7ff;
+  --primary-foreground: #421d24;
+  --secondary: #3a2f5c;
+  --secondary-foreground: #f2f0eb;
+  --muted: #2e2a28;
+  --muted-foreground: #a8a4a0;
+  --accent: #332c45;
+  --accent-foreground: #f2f0eb;
+  --destructive: #f97066;
+  --border: rgb(242 240 235 / 12%);
+  --input: rgb(242 240 235 / 16%);
+  --ring: #b9a3ff;
+  --chart-1: #c28232;
+  --chart-2: #b9a3ff;
+  --chart-3: #3f9c9e;
+  --chart-4: #c98a96;
+  --chart-5: #a8a4a0;
+  --sidebar: #232020;
+  --sidebar-foreground: #f2f0eb;
+  --sidebar-primary: #d4c7ff;
+  --sidebar-primary-foreground: #421d24;
+  --sidebar-accent: #332c45;
+  --sidebar-accent-foreground: #f2f0eb;
+  --sidebar-border: rgb(242 240 235 / 12%);
+  --sidebar-ring: #b9a3ff;
+}
+
+/* "Link with Underline": violet links, underline fades in over 0.2s. */
+@utility link {
+  color: var(--violet);
+  font-weight: 460;
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease;
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* Film grain over art surfaces. Parent must be positioned (relative/absolute). */
+@utility grain {
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* "Gradient Banner": decorative atmosphere only, never on interactive surfaces. */
+@utility bg-atmosphere {
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(40% 70% at 68% 50%, rgb(113 76 182 / 0.55), transparent 70%),
+    radial-gradient(35% 70% at 93% 50%, rgb(86 132 255 / 0.5), transparent 70%),
+    radial-gradient(55% 55% at 50% 98%, rgb(255 138 178 / 0.55), transparent 70%),
+    radial-gradient(45% 50% at 50% 75%, rgb(92 214 226 / 0.5), transparent 70%);
+}
+
+/* Paper texture for documents (proposals, invoices, contracts). */
+@utility bg-paper {
+  background-color: #fffdf8;
+  background-image:
+    linear-gradient(rgb(41 40 39 / 0.035) 1px, transparent 1px);
+  background-size: 100% 28px;
+}
+
+/* Scroll-driven reveal (Chromium); a no-op elsewhere and under reduced motion. */
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss03";
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 460;
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--lilac);
+    color: var(--ink);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
