@@ -11,15 +11,6 @@ Ochre: the back office for independent creative studios. Interactive proposals, 
 
 All companies, people and numbers are fictional.
 
-## Run it
-
-```bash
-npm install
-npm run dev
-```
-
-Then open http://localhost:3000.
-
 ## Logging in
 
 There are no real accounts yet, so there are no credentials. On `/login`, enter **any email** and **any password of 8 or more characters**, then press **Log in**. You can also use "Continue with Google" (demo only) or go straight to `/app`. Nothing you type is stored or sent anywhere.
