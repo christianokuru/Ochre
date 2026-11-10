@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ochre
+Ochre: the back office for independent creative studios. Interactive proposals, contracts, invoices and payouts, built as a Next.js 16 + shadcn/ui frontend with a live time-of-day sky, an editorial "golden hour" design system and a fully working demo studio.
 
-## Getting Started
+**Less admin. More golden hours.**
 
-First, run the development server:
+## What's inside
+
+- **Marketing site:** home (with a sky you can scrub through 24 hours), product, pricing (with a time-saved calculator), customers and six customer stories, changelog and about.
+- **Demo app:** the workspace of *Imole Studio*, a fictional branding studio in Ikoyi, Lagos. Overview dashboard with revenue charts, a projects board, invoices (with a page per invoice), clients and settings.
+- **Client proposal:** `/p/fernhill-coffee` is what a client receives. Pick packages, watch the price change, type your name and sign.
+
+All companies, people and numbers are fictional.
+
+## Run it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Logging in
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+There are no real accounts yet, so there are no credentials. On `/login`, enter **any email** and **any password of 8 or more characters**, then press **Log in**. You can also use "Continue with Google" (demo only) or go straight to `/app`. Nothing you type is stored or sent anywhere.
 
-## Learn More
+## Tech
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 16 (App Router, Cache Components, Partial Prefetching)
+- React 19 and TypeScript
+- Tailwind CSS v4 and shadcn/ui (Base UI)
+- Inter, Instrument Serif and Caveat fonts; Lucide icons
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Path | What's there |
+|---|---|
+| `src/app/(site)` | Marketing pages |
+| `src/app/(auth)` | Demo log-in and sign-up |
+| `src/app/app` | The studio app |
+| `src/app/p/[slug]` | Client-facing proposal |
+| `src/lib/site-data.ts`, `src/lib/app-data.ts` | All hardcoded content and demo data |
+| `src/proxy.ts` | Returns real 404s for unknown stories, proposals and invoices |
+| `docs/DESIGN.md` | The design reference the theme is built on |
 
-## Deploy on Vercel
+## Status
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Frontend only. The planned backend is Supabase (database, accounts, storage) with Stripe Connect and Paystack for payments.
